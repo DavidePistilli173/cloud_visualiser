@@ -19,6 +19,8 @@ find_package(catkin REQUIRED COMPONENTS
   camera_info_manager
 )
 
+find_package(Boost REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(PCL 1.8 REQUIRED)
 find_package(OpenCV 4.3 REQUIRED)
 
