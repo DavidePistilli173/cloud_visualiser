@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!-- SESSION ID: 1587636313 -->
+<launch>
+    <!-- Launch node -->
+    <node pkg="cloud_visualiser" type="cloud_visualiser" name="cloud_viz" output="screen">
+        <!-- Size of the filtering box. -->
+        <param name="min_x"                     value="-1.5"/>
+        <param name="max_x"                     value="1.5"/>
+        <param name="min_y"                     value="-1.5"/>
+        <param name="max_y"                     value="1.5"/>
+        <param name="min_z"                     value="0.5"/>
+        <param name="max_z"                     value="4.0"/>
+
+        <!-- Size of a downsampling cell. -->
+        <param name="leaf_size"                 value="0.01"/>
+        <param name="fuse_clouds"               value="true"/>
+
+        <param name="num_sensors"               value="3" />
+
+        <param name="sensor_0_name"             value="/kinect_01" />
+        <param name="sensor_0_rgb"              value="/kinect_01/hd/image_color_rect"/>
+        <param name="sensor_0_depth"            value="/kinect_01/hd/image_depth_rect"/>
+
+        <param name="sensor_1_name"             value="/kinect_02" />
+        <param name="sensor_1_rgb"              value="/kinect_02/hd/image_color_rect"/>
+        <param name="sensor_1_depth"            value="/kinect_02/hd/image_depth_rect"/>
+
+        <param name="sensor_2_name"             value="/kinect_03" />
+        <param name="sensor_2_rgb"              value="/kinect_03/hd/image_color_rect"/>
+        <param name="sensor_2_depth"            value="/kinect_03/hd/image_depth_rect"/>
+
+    </node>
+
+    <node pkg="image_transport" type="republish" name="republish_kinect_01_color" args="compressed in:=/kinect_01/hd/image_color_rect raw out:=/kinect_01/hd/image_color_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_02_color" args="compressed in:=/kinect_02/hd/image_color_rect raw out:=/kinect_02/hd/image_color_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_03_color" args="compressed in:=/kinect_03/hd/image_color_rect raw out:=/kinect_03/hd/image_color_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_01_depth" args="compressed in:=/kinect_01/hd/image_depth_rect raw out:=/kinect_01/hd/image_depth_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_02_depth" args="compressed in:=/kinect_02/hd/image_depth_rect raw out:=/kinect_02/hd/image_depth_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_03_depth" args="compressed in:=/kinect_03/hd/image_depth_rect raw out:=/kinect_03/hd/image_depth_rect" />
+
+    <node pkg="rosbag" type="play" name="player" output="screen" required="true" args="--clock --quiet --rate 0.2 /home/cjm036653/FThesis/calib_full_kinects.bag"/>
+</launch>
