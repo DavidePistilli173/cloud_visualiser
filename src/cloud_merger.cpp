@@ -6,26 +6,25 @@ namespace cloud_viz {
   {
     result_ = pcl::PointCloud<PointT>::Ptr(new pcl::PointCloud<PointT>());
 
-    normalEstimator_.setRadiusSearch(0.1);
+    normalEstimator_.setRadiusSearch(params_.normalR);
 
-    kptDetector_.setBorderRadius(0.05);
-    kptDetector_.setNonMaxRadius(0.1);
-    kptDetector_.setSalientRadius(0.05);
-    kptDetector_.setRadiusSearch(0.05);
+    kptDetector_.setBorderRadius(params_.kptBorderR);
+    kptDetector_.setNonMaxRadius(params_.kptNonMaxR);
+    kptDetector_.setSalientRadius(params_.kptSalientR);
+    kptDetector_.setRadiusSearch(params_.kptSearchR);
 
-    descriptorEstimator_.setLRFRadius(0.1F);
-    descriptorEstimator_.setRadiusSearch(0.05);
+    descriptorEstimator_.setLRFRadius(params_.descLFR);
+    descriptorEstimator_.setRadiusSearch(params_.descSearchR);
 
     correspondenceRejector_.setRefineModel(false);
-    correspondenceRejector_.setInlierThreshold(0.5); // 0.25
+    correspondenceRejector_.setInlierThreshold(params_.rejInlierTh); // 0.25
     correspondenceRejector_.setSaveInliers(true);
-    ROS_INFO("Correspondence rejection iterations: %d", correspondenceRejector_.getMaximumIterations());
 
-    icp_.setTransformationEpsilon(icp_tf_epsilon);
-    icp_.setMaximumIterations(icp_max_iter_high);
-    icp_.setRANSACOutlierRejectionThreshold(icp_RANSAC_th);
-    icp_.setMaxCorrespondenceDistance(icp_max_corr_dist_high);
-    icp_.setEuclideanFitnessEpsilon(icp_euclid_fit_epsilon);
+    icp_.setTransformationEpsilon(params_.icpTFEps);
+    icp_.setMaximumIterations(params_.icpMaxIterH);
+    icp_.setRANSACOutlierRejectionThreshold(params_.icpRANSACTh);
+    icp_.setMaxCorrespondenceDistance(params_.icpMaxCorrDistH);
+    icp_.setEuclideanFitnessEpsilon(params_.icpEuclidFitEps);
   }
 
   void CloudMerger::addData(const std::vector<pcl::PointCloud<PointT>::Ptr>& clouds)
@@ -113,15 +112,15 @@ namespace cloud_viz {
                                                  *(sensorNodes_[sourceID].refinedCorrespondences),
                                                  estimatedPose);
 
-        icp_.setMaxCorrespondenceDistance(icp_max_corr_dist_high);
-        icp_.setMaximumIterations(icp_max_iter_high);
+        icp_.setMaxCorrespondenceDistance(params_.icpMaxCorrDistH);
+        icp_.setMaximumIterations(params_.icpMaxIterH);
       }
       // If the current error is low enough, just refine the current pose.
       else {
         ROS_INFO("S%lu: pose refinement.", sourceID);
         estimatedPose = sensorNodes_[sourceID].relativePose;
-        icp_.setMaxCorrespondenceDistance(icp_max_corr_dist_low);
-        icp_.setMaximumIterations(icp_max_iter_low);
+        icp_.setMaxCorrespondenceDistance(params_.icpMaxCorrDistL);
+        icp_.setMaximumIterations(params_.icpMaxIterL);
       }
 
       // Improve the estimated TFs through ICP.
@@ -198,6 +197,8 @@ namespace cloud_viz {
       sensorNodes_[i].refinedCorrespondences = pcl::CorrespondencesPtr(new pcl::Correspondences());
     }
   }
+
+  void CloudMerger::setParams(const Params& params) { params_ = params; }
 
   void CloudMerger::poseRefinement_(const pcl::PointCloud<PointTNormal>::Ptr& sourceCloud,
                                     const pcl::PointCloud<PointTNormal>::Ptr& targetCloud,

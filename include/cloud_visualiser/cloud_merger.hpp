@@ -21,17 +21,58 @@ namespace cloud_viz {
     using NormalPt = pcl::Normal;
     using Descriptor = pcl::SHOT1344;
 
+    // Normal estimator parameters.
+    inline static constexpr double normal_radius{0.1};
+
+    // Keypoint detector parameters.
+    inline static constexpr double kpt_border_radius{0.05};
+    inline static constexpr double kpt_non_max_radius{0.1};
+    inline static constexpr double kpt_salient_radius{0.05};
+    inline static constexpr double kpt_search_radius{0.05};
+
+    // Descriptor estimator parameters.
+    inline static constexpr float desc_lfr_radius{0.1F};
+    inline static constexpr double desc_search_radius{0.05};
+
+    // Correspondence rejector parameters.
+    inline static constexpr double rej_inlier_th{0.5};
+
+    // ICP parameters.
+    inline static constexpr double icp_tf_epsilon{1e-12};
+    inline static constexpr int icp_max_iter_high{25};
+    inline static constexpr int icp_max_iter_low{40};
+    inline static constexpr double icp_RANSAC_th{0.001};
+    inline static constexpr double icp_max_corr_dist_high{0.2};
+    inline static constexpr double icp_max_corr_dist_low{0.1};
+    inline static constexpr double icp_euclid_fit_epsilon{2.0};
+
     // ICP error per point pair. Below this error, only ICP will be performed.
     static constexpr double base_error{1.0e-7};
 
-    // ICP parameters.
-    static constexpr double icp_tf_epsilon{1e-12};
-    static constexpr int icp_max_iter_high{25};
-    static constexpr int icp_max_iter_low{40};
-    static constexpr double icp_RANSAC_th{0.001};
-    static constexpr double icp_max_corr_dist_high{0.2};
-    static constexpr double icp_max_corr_dist_low{0.1};
-    static constexpr double icp_euclid_fit_epsilon{2.0};
+    // Calibration parameters.
+    struct Params
+    {
+      // Normal estimator.
+      double normalR;
+      // Keypoint detector.
+      double kptBorderR;
+      double kptNonMaxR;
+      double kptSalientR;
+      double kptSearchR;
+      // Descriptor estimator.
+      float descLFR;
+      double descSearchR;
+      // Correspondence rejector.
+      double rejInlierTh;
+      // ICP.
+      double icpTFEps;
+      int icpMaxIterH;
+      int icpMaxIterL;
+      double icpRANSACTh;
+      double icpMaxCorrDistH;
+      double icpMaxCorrDistL;
+      double icpEuclidFitEps;
+    };
 
     // TF node.
     struct Node
@@ -61,6 +102,7 @@ namespace cloud_viz {
 
     // Reset the number of nodes.
     void setNodeSize(size_t size);
+    void setParams(const Params& params);
 
   private:
     // Refine a pose estimate.
@@ -81,6 +123,24 @@ namespace cloud_viz {
     pcl::registration::CorrespondenceRejectorSampleConsensus<PointT> correspondenceRejector_;
     pcl::registration::TransformationEstimationSVD<PointT, PointT> tfEstimator_;
     pcl::IterativeClosestPointWithNormals<pcl::PointXYZRGBNormal, pcl::PointXYZRGBNormal> icp_;
+
+    // Calibration parameters.
+    Params params_{normal_radius,
+                   kpt_border_radius,
+                   kpt_non_max_radius,
+                   kpt_salient_radius,
+                   kpt_search_radius,
+                   desc_lfr_radius,
+                   desc_search_radius,
+                   rej_inlier_th,
+                   icp_tf_epsilon,
+                   icp_max_iter_high,
+                   icp_max_iter_low,
+                   icp_RANSAC_th,
+                   icp_max_corr_dist_high,
+                   icp_max_corr_dist_low,
+                   icp_euclid_fit_epsilon};
+
   }; // namespace cloud_viz
 } // namespace cloud_viz
 

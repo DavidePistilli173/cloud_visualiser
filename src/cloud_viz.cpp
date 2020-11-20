@@ -35,6 +35,26 @@ namespace cloud_viz {
     if (fuse_clouds_) {
       cloud_merger_.setNodeSize(num_sensors_);
       cloud_pub_ = node_handle_.advertise<sensor_msgs::PointCloud2>("cloud_viz/cloud", 1);
+
+      // Set the parameters for cloud-merging
+      CloudMerger::Params params;
+      node_handle_.param("normal_radius", params.normalR, CloudMerger::normal_radius);
+      node_handle_.param("kpt_border_radius", params.kptBorderR, CloudMerger::kpt_border_radius);
+      node_handle_.param("kpt_non_max_radius", params.kptNonMaxR, CloudMerger::kpt_non_max_radius);
+      node_handle_.param("kpt_salient_radius", params.kptSalientR, CloudMerger::kpt_salient_radius);
+      node_handle_.param("kpt_search_radius", params.kptSearchR, CloudMerger::kpt_search_radius);
+      node_handle_.param("desc_lfr_radius", params.descLFR, CloudMerger::desc_lfr_radius);
+      node_handle_.param("desc_search_radius", params.descSearchR, CloudMerger::desc_search_radius);
+      node_handle_.param("rej_inlier_th", params.rejInlierTh, CloudMerger::rej_inlier_th);
+      node_handle_.param("icp_tf_epsilon", params.icpTFEps, CloudMerger::icp_tf_epsilon);
+      node_handle_.param("icp_max_iter_high", params.icpMaxIterH, CloudMerger::icp_max_iter_high);
+      node_handle_.param("icp_max_iter_low", params.icpMaxIterL, CloudMerger::icp_max_iter_low);
+      node_handle_.param("icp_RANSAC_th", params.icpRANSACTh, CloudMerger::icp_RANSAC_th);
+      node_handle_.param("icp_max_corr_dist_high", params.icpMaxCorrDistH, CloudMerger::icp_max_corr_dist_high);
+      node_handle_.param("icp_max_corr_dist_low", params.icpMaxCorrDistL, CloudMerger::icp_max_corr_dist_low);
+      node_handle_.param("icp_euclid_fit_epsilon", params.icpEuclidFitEps, CloudMerger::icp_euclid_fit_epsilon);
+
+      cloud_merger_.setParams(params);
     }
 
     for (int i = 0; i < num_sensors_; ++i) {

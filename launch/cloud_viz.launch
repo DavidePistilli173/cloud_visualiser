@@ -15,6 +15,27 @@
         <param name="leaf_size"                 value="0.01"/>
         <param name="fuse_clouds"               value="true"/>
 
+        <!-- Normal estimator parameters -->
+        <param name="normal_radius" value="0.1"/>
+        <!-- Keypoint detector parameters -->
+        <param name="kpt_border_radius" value="0.05"/>
+        <param name="kpt_non_max_radius" value="0.1"/>
+        <param name="kpt_salient_radius" value="0.05"/>
+        <param name="kpt_search_radius" value="0.05"/>
+        <!-- Descriptor estimator parameters -->
+        <param name="desc_lfr_radius" value="0.1F"/>
+        <param name="desc_search_radius" value="0.05"/>
+        <!-- Correspondence rejector parameters -->
+        <param name="rej_inlier_th" value="0.5"/>
+        <!-- ICP parameters -->
+        <param name="icp_tf_epsilon" value="1e-12"/>
+        <param name="icp_max_iter_high" value="25"/>
+        <param name="icp_max_iter_low" value="40"/>
+        <param name="icp_RANSAC_th" value="0.001"/>
+        <param name="icp_max_corr_dist_high" value="0.2"/>
+        <param name="icp_max_corr_dist_low" value="0.1"/>
+        <param name="icp_euclid_fit_epsilon" value="2.0"/>
+
         <param name="num_sensors"               value="3" />
 
         <param name="sensor_0_name"             value="/kinect_01" />
@@ -38,5 +59,5 @@
     <node pkg="image_transport" type="republish" name="republish_kinect_02_depth" args="compressed in:=/kinect_02/hd/image_depth_rect raw out:=/kinect_02/hd/image_depth_rect" />
     <node pkg="image_transport" type="republish" name="republish_kinect_03_depth" args="compressed in:=/kinect_03/hd/image_depth_rect raw out:=/kinect_03/hd/image_depth_rect" />
 
-    <node pkg="rosbag" type="play" name="player" output="screen" required="true" args="--clock --quiet --rate 0.2 /home/cjm036653/FThesis/calib_full_kinects.bag"/>
+    <node pkg="rosbag" type="play" name="player" output="screen" required="true" args="--clock --quiet --rate 0.1 /home/cjm036653/FThesis/calib_full_kinects.bag"/>
 </launch>
