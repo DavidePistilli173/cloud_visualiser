@@ -38,21 +38,39 @@ namespace cloud_viz {
 
       // Set the parameters for cloud-merging
       CloudMerger::Params params;
+      ROS_INFO("Parameters:\n");
+      node_handle_.param("floor_leaf_size", params.leafSize, CloudMerger::leaf_size);
+      std::cout << "floor_leaf_size = " << params.leafSize << '\n';
       node_handle_.param("normal_radius", params.normalR, CloudMerger::normal_radius);
+      std::cout << "normalR = " << params.normalR << '\n';
       node_handle_.param("kpt_border_radius", params.kptBorderR, CloudMerger::kpt_border_radius);
+      std::cout << "kptBorderR = " << params.kptBorderR << '\n';
       node_handle_.param("kpt_non_max_radius", params.kptNonMaxR, CloudMerger::kpt_non_max_radius);
+      std::cout << "kptNonMaxR = " << params.kptNonMaxR << '\n';
       node_handle_.param("kpt_salient_radius", params.kptSalientR, CloudMerger::kpt_salient_radius);
+      std::cout << "kptSalientR = " << params.kptSalientR << '\n';
       node_handle_.param("kpt_search_radius", params.kptSearchR, CloudMerger::kpt_search_radius);
+      std::cout << "kptSearchR = " << params.kptSearchR << '\n';
       node_handle_.param("desc_lfr_radius", params.descLFR, CloudMerger::desc_lfr_radius);
+      std::cout << "descLFR = " << params.descLFR << '\n';
       node_handle_.param("desc_search_radius", params.descSearchR, CloudMerger::desc_search_radius);
+      std::cout << "descSearchR = " << params.descSearchR << '\n';
       node_handle_.param("rej_inlier_th", params.rejInlierTh, CloudMerger::rej_inlier_th);
+      std::cout << "rejInlierTh = " << params.rejInlierTh << '\n';
       node_handle_.param("icp_tf_epsilon", params.icpTFEps, CloudMerger::icp_tf_epsilon);
+      std::cout << "icpTFEps = " << params.icpTFEps << '\n';
       node_handle_.param("icp_max_iter_high", params.icpMaxIterH, CloudMerger::icp_max_iter_high);
+      std::cout << "icpMaxIterH = " << params.icpMaxIterH << '\n';
       node_handle_.param("icp_max_iter_low", params.icpMaxIterL, CloudMerger::icp_max_iter_low);
+      std::cout << "icpMaxIterL = " << params.icpMaxIterL << '\n';
       node_handle_.param("icp_RANSAC_th", params.icpRANSACTh, CloudMerger::icp_RANSAC_th);
+      std::cout << "icpRANSACTh = " << params.icpRANSACTh << '\n';
       node_handle_.param("icp_max_corr_dist_high", params.icpMaxCorrDistH, CloudMerger::icp_max_corr_dist_high);
+      std::cout << "icpMaxCorrDistH = " << params.icpMaxCorrDistH << '\n';
       node_handle_.param("icp_max_corr_dist_low", params.icpMaxCorrDistL, CloudMerger::icp_max_corr_dist_low);
+      std::cout << "icpMaxCorrDistL = " << params.icpMaxCorrDistL << '\n';
       node_handle_.param("icp_euclid_fit_epsilon", params.icpEuclidFitEps, CloudMerger::icp_euclid_fit_epsilon);
+      std::cout << "icpEuclidFitEps = " << params.icpEuclidFitEps << '\n';
 
       cloud_merger_.setParams(params);
     }

@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!-- SESSION ID: 1587636313 -->
+<launch>
+    <!-- Launch node -->
+    <node pkg="cloud_visualiser" type="cloud_visualiser" name="cloud_viz" output="screen">
+        <!-- Size of the filtering box. -->
+        <param name="min_x"                     value="-1.5"/>
+        <param name="max_x"                     value="1.5"/>
+        <param name="min_y"                     value="-1.5"/>
+        <param name="max_y"                     value="1.5"/>
+        <param name="min_z"                     value="0.5"/>
+        <param name="max_z"                     value="4.0"/>
+
+        <!-- Size of a downsampling cell. -->
+        <param name="leaf_size"                 value="0.01"/>
+        <param name="fuse_clouds"               value="true"/>
+
+        <!-- Normal estimator parameters -->
+        <param name="normal_radius" value="0.1"/>
+        <!-- Keypoint detector parameters -->
+        <param name="kpt_border_radius" value="0.05"/>
+        <param name="kpt_non_max_radius" value="0.1"/>
+        <param name="kpt_salient_radius" value="0.05"/>
+        <param name="kpt_search_radius" value="0.05"/>
+        <!-- Descriptor estimator parameters -->
+        <param name="desc_lfr_radius" value="0.1F"/>
+        <param name="desc_search_radius" value="0.05"/>
+        <!-- Correspondence rejector parameters -->
+        <param name="rej_inlier_th" value="0.5"/>
+        <!-- ICP parameters -->
+        <param name="icp_tf_epsilon" value="1e-12"/>
+        <param name="icp_max_iter_high" value="25"/>
+        <param name="icp_max_iter_low" value="40"/>
+        <param name="icp_RANSAC_th" value="0.001"/>
+        <param name="icp_max_corr_dist_high" value="0.2"/>
+        <param name="icp_max_corr_dist_low" value="0.1"/>
+        <param name="icp_euclid_fit_epsilon" value="2.0"/>
+
+        <param name="num_sensors"               value="3" />
+
+        <param name="sensor_0_name"             value="/kinect_02" />
+        <param name="sensor_0_rgb"              value="/kinect_02/hd/image_mono_rect"/>
+        <param name="sensor_0_depth"            value="/kinect_02/hd/image_depth_rect"/>
+
+        <param name="sensor_1_name"             value="/kinect_03" />
+        <param name="sensor_1_rgb"              value="/kinect_03/hd/image_mono_rect"/>
+        <param name="sensor_1_depth"            value="/kinect_03/hd/image_depth_rect"/>
+
+        <param name="sensor_2_name"             value="/kinect_04" />
+        <param name="sensor_2_rgb"              value="/kinect_04/hd/image_mono_rect"/>
+        <param name="sensor_2_depth"            value="/kinect_04/hd/image_depth_rect"/>
+
+    </node>
+
+    <node pkg="image_transport" type="republish" name="republish_kinect_02_color" args="compressed in:=/kinect_02/hd/image_mono_rect raw out:=/kinect_02/hd/image_mono_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_03_color" args="compressed in:=/kinect_03/hd/image_mono_rect raw out:=/kinect_03/hd/image_mono_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_04_color" args="compressed in:=/kinect_04/hd/image_mono_rect raw out:=/kinect_04/hd/image_mono_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_02_depth" args="compressed in:=/kinect_02/hd/image_depth_rect raw out:=/kinect_02/hd/image_depth_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_03_depth" args="compressed in:=/kinect_03/hd/image_depth_rect raw out:=/kinect_03/hd/image_depth_rect" />
+    <node pkg="image_transport" type="republish" name="republish_kinect_04_depth" args="compressed in:=/kinect_04/hd/image_depth_rect raw out:=/kinect_04/hd/image_depth_rect" />
+
+    <node pkg="rosbag" type="play" name="player" output="screen" required="true" args="--clock --quiet --rate 0.01 /home/cjm036653/FThesis/depth_calib.bag"/>
+    <!-- calib_full_kinects -->
+    <!-- depth_calib -->
+    <!-- apriltag -->
+</launch>

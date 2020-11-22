@@ -20,7 +20,7 @@ namespace cloud_viz {
     using Ptr = boost::shared_ptr<KinectSensor>;
     using ConstPtr = boost::shared_ptr<const KinectSensor>;
 
-    inline static constexpr float def_leaf_size{0.01F}; // Default leaf size.
+    inline static constexpr float def_leaf_size{0.0075F}; // Default leaf size.
 
     KinectSensor();
 

@@ -97,8 +97,13 @@ namespace cloud_viz {
     }
 
     pcl::PointCloud<pcl::PointXYZRGB>::Ptr filteredCloud(new pcl::PointCloud<pcl::PointXYZRGB>());
-    downsampler_.setInputCloud(cloud);
-    downsampler_.filter(*filteredCloud);
+    if (leaf_size_ > 0.0) {
+      downsampler_.setInputCloud(cloud);
+      downsampler_.filter(*filteredCloud);
+    }
+    else
+      *filteredCloud = *cloud;
+
     box_filter_.filter(filteredCloud);
 
     // Remove NaN values.
